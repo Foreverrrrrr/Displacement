@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="Displacement.Views.SetPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Displacement.Views"
+             mc:Ignorable="d"   d:DesignHeight="900" d:DesignWidth="1800"
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True" Background="White" >
+    <Grid>
+        <StackPanel Orientation="Vertical" >
+            <StackPanel Margin="10,20,20,20" Orientation="Horizontal" VerticalAlignment="Top">
+                <TextBlock Text="参数型号：" FontSize="21" Width="100" Height="40" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <ComboBox x:Name="ParametName"  SelectedIndex="{Binding ParameterIndexes}" DisplayMemberPath="Name" SelectedValuePath="ID" ItemsSource="{Binding ParameterNameList}" FontSize="16" Width="140" Height="35" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownClosed="ComboBox_DropDownClosed" Foreground="Black"/>
+                <Button Margin="10,0,10,0" Content="保存参数" FontSize="21" Width="130" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Click="Button_Click_1"/>
+                <Button Margin="10,0,10,0" Content="修改名称" FontSize="21" Width="130" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Click="Button_Click_2"/>
+                <Button Margin="10,0,10,0" Content="添加型号" FontSize="21" Width="130" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Click="Button_Click"/>
+                <Button Margin="10,0,10,0" Content="删除型号" FontSize="21" Width="130" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Click="Button_Click_3"/>
+                <Button Margin="10,0,10,0" Content="传感器增益计算" FontSize="21" Width="180" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Click="Button_Click_4"/>
+                <Button Margin="10,0,10,0" Content="归零基准" FontSize="21" Width="150" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Click="Button_Click_5"/>
+                <Button Margin="10,0,10,0" Content="归零基准清除" FontSize="21" Width="160" Height="40" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Black" Click="Button_Click_6"/>
+
+            </StackPanel>
+            <StackPanel Margin="20,0,0,0">
+                <DataGrid x:Name="test"  AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" Height="680" FontSize="18" BorderBrush="#1F000000" ItemsSource="{Binding ArgumentsData,IsAsync=True}" ColumnWidth="*"  CanUserAddRows="False" SelectionMode="Single" HorizontalAlignment="Left" Width="1400" IsEnabled="{Binding Boost}">
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell" >
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Background" Value="#FFCECCCC" />
+                                    <Setter Property="Foreground" Value="#FF060606" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="参数名称" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Margin="15,10,0,0"  Text="{Binding Path=Name,Mode=TwoWay}" Foreground="Black"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="值" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Margin="15,10,0,0"  Text="{Binding Path=Value,Mode=TwoWay}" Foreground="Black"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+
+</UserControl>

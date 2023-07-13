@@ -1,0 +1,50 @@
+﻿<Window x:Class="Displacement.Views.LoginSystem"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Displacement.Views"
+        mc:Ignorable="d"
+         xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="System登入"  Height="450" Width="600" Visibility="Visible" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
+    <Window.Background>
+        <SolidColorBrush Color="#FFF1F1F1" Opacity="1"/>
+    </Window.Background>
+    <Grid>
+        <Button x:Name="Close" Height="17" Margin="582,0,0,0" BorderBrush="{x:Null}" Cursor="Hand" Foreground="#FF080707" FontWeight="Normal" Click="Close_Click" VerticalAlignment="Top">
+            <Button.Background>
+                <ImageBrush ImageSource="/Views/关闭.png" Stretch="Fill" TileMode="None"/>
+            </Button.Background>
+        </Button>
+        <Button  x:Name="Min" Height="17" Margin="565,0,18,0"  BorderBrush="{x:Null}" Foreground="#FF040404" Cursor="Hand" Click="Min_Click" VerticalAlignment="Top">
+            <Button.Background>
+                <ImageBrush ImageSource="/Views/收缩.png"/>
+            </Button.Background>
+        </Button>
+        <StackPanel Orientation="Vertical" Width="400" Height="300">
+            <ComboBox x:Name="username" Margin="10"  Foreground="Black" Style="{StaticResource MaterialDesignOutlinedComboBox}" materialDesign:HintAssist.Hint="UserName" materialDesign:TextFieldAssist.HasClearButton="True" Width="300" SelectedIndex="1">
+
+                <ComboBoxItem Content="工程师"/>
+                <ComboBoxItem Content="操作员"/>
+
+            </ComboBox>
+            <PasswordBox x:Name="password" Password="123" Margin="10" Width="300"
+    Style="{StaticResource MaterialDesignFilledPasswordBox}"
+    VerticalAlignment="Top"
+    materialDesign:HintAssist.Hint="Password" Cursor="Arrow" />
+            <Button x:Name="login" Margin="30" Height="40" Width="340"
+    Style="{StaticResource MaterialDesignRaisedButton}"
+    materialDesign:ButtonProgressAssist.Value="-1"
+    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding Upload}"
+    materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+    Content="登入"  BorderBrush="#FF5FD41B" Background="#FF5FD41B" Click="login_Click" Cursor="Hand" />
+
+            <TextBox x:Name="log" materialDesign:HintAssist.Hint="" Text="{Binding Logtext}" MinWidth="72" Cursor="Arrow" IsReadOnly="True" />
+
+        </StackPanel>
+
+    </Grid>
+</Window>
+

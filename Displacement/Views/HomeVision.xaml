@@ -1,0 +1,477 @@
+﻿<UserControl x:Class="Displacement.Views.HomeVision"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Displacement.Views" xmlns:chart="http://schemas.syncfusion.com/wpf"
+             mc:Ignorable="d" 
+             Height="800" Width="1400" Background="White" >
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/Views/ColorModel.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <StackPanel Orientation="Vertical">
+            <!--<StackPanel Margin="20,5,0,5" Height="50" Orientation="Horizontal" VerticalAlignment="Top">
+                <TextBlock Text="当前型号：" FontSize="21" Width="100" Height="40" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <ComboBox x:Name="ParametName"  SelectedIndex="{Binding ParameterIndexes}" DisplayMemberPath="Name" SelectedValuePath="ID" ItemsSource="{Binding ParameterNameList}" FontSize="16" Width="140" Height="35" VerticalAlignment="Top" HorizontalAlignment="Left" DropDownClosed="ComboBox_DropDownClosed" Foreground="Black"/>
+                <Button Style="{StaticResource MaterialDesignPaperDarkButton}" Margin="40,0,0,0" Height="45" Width="160" VerticalAlignment="Top" Content="程控电源设置" Foreground="Black" FontSize="20" Click="Set_AutoPower"/>
+                <Button Style="{StaticResource MaterialDesignPaperDarkButton}" Margin="20,0,0,0" Height="45" Width="160" VerticalAlignment="Top" Content="串动位移设置" Foreground="Black" FontSize="20" Click="standard_set"/>
+                <Button Style="{StaticResource MaterialDesignPaperDarkButton}" Margin="20,0,0,0" Height="45" Width="160" VerticalAlignment="Top" Content="轴跳位移设置" Foreground="Black" FontSize="20"/>
+                <Button Content="手动触发5工位" Height="30" Width="120" Click="Button_Click"/>
+            </StackPanel>-->
+            <StackPanel Height="25" Orientation="Horizontal">
+                <Border Margin="30,0,0,0" Width="600" Background="#FF9FF368">
+                    <TextBlock Margin="-450,0,0,0" Text="轴跳一工位" FontSize="19" HorizontalAlignment="Center" Foreground="Black"/>
+                </Border>
+                <!--<Button Click="Button_Click_1" />-->
+                <Border Margin="70,0,0,0" Width="600" Background="#FF9FF368">
+                    <TextBlock Margin="-450,0,0,0" Text="轴跳二工位" FontSize="19" HorizontalAlignment="Center" Foreground="Black"/>
+                </Border>
+                <TextBlock Margin="-2160,0,0,0" Text="轴差值:" FontSize="18" HorizontalAlignment="Center" Foreground="Black"/>
+                <TextBlock Margin="-2000,0,0,0" Width="100"  Text="{Binding OneDifferenceValue, StringFormat='{} {0} mm'}" FontSize="18" HorizontalAlignment="Center" Foreground="Black"/>
+                <TextBlock  Margin="-1750,0,0,0" Text="蜗杆差值:" FontSize="18" HorizontalAlignment="Center" Foreground="Black"/>
+                <TextBlock  Margin="-1550,0,0,0" Width="100" Text="{Binding TwoDifferenceValue, StringFormat='{} {0} mm'}" FontSize="18" HorizontalAlignment="Center" Foreground="Black"/>
+                <TextBlock Margin="-820,0,0,0" Text="轴差值:" FontSize="18" HorizontalAlignment="Center" Foreground="Black"/>
+                <TextBlock Margin="-650,0,0,0"  Width="100" Text="{Binding ThreeDifferenceValue, StringFormat='{} {0} mm'}" FontSize="18" HorizontalAlignment="Center" Foreground="Black"/>
+                <TextBlock Margin="-450,0,0,0"  Text="蜗杆差值:" FontSize="18" HorizontalAlignment="Center" Foreground="Black"/>
+                <TextBlock Margin="-250,0,0,0" Width="100" Text="{Binding FourDifferenceValue, StringFormat='{} {0} mm'}" FontSize="18" HorizontalAlignment="Center" Foreground="Black"/>
+            </StackPanel>
+            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <chart:SfChart Margin="10,10,0,0" x:Name="chartcurve1" Width="600" Height="250" ColorModel="{StaticResource CustomColor}" Palette="Custom" Background="White" Foreground="Black">
+                    <chart:SfChart.Legend>
+                        <chart:ChartLegend  FontSize="9"/>
+                    </chart:SfChart.Legend>
+                    <chart:SfChart.Behaviors>
+                        <chart:ChartZoomPanBehavior 
+                    EnablePanning="True"
+                    EnableSelectionZooming="False"
+                    ResetOnDoubleTap="True" MaximumZoomLevel="10"/>
+                    </chart:SfChart.Behaviors>
+                    <chart:SfChart.PrimaryAxis>
+                        <chart:NumericalAxis  ShowGridLines="True" Background="White" Foreground="Black" Interval="100">
+                        </chart:NumericalAxis>
+                    </chart:SfChart.PrimaryAxis>
+                    <chart:SfChart.SecondaryAxis>
+                        <chart:NumericalAxis ShowGridLines="True" Maximum="11" Background="White" Foreground="Black" Interval="1" Header="mm">
+                        </chart:NumericalAxis>
+                    </chart:SfChart.SecondaryAxis>
+                    <chart:FastLineSeries EnableAnimation="True"  VisibilityOnLegend="Visible" AnimationDuration="00:00:01" ItemsSource="{Binding SerializationOneAdSampling}" Label="One" StrokeThickness="2" XBindingPath="X" YBindingPath="Y"/>
+                    <chart:FastLineSeries EnableAnimation="False" VisibilityOnLegend="Visible" AnimationDuration="00:00:05" ItemsSource="{Binding SerializationOnePeak}" Label="OnePeak" StrokeThickness="4" XBindingPath="X" YBindingPath="Y"/>
+                    <chart:FastLineSeries EnableAnimation="False" VisibilityOnLegend="Visible" AnimationDuration="00:00:05" ItemsSource="{Binding SerializationOneGrain}" Label="OneGrain" StrokeThickness="4" XBindingPath="X" YBindingPath="Y"/>
+                </chart:SfChart>
+
+                <chart:SfChart x:Name="chartcurve2" Margin="50,10,0,0" Width="600" Height="250" ColorModel="{StaticResource CustomColor}" Palette="Custom" Background="White" Foreground="Black">
+                    <chart:SfChart.Legend>
+                        <chart:ChartLegend FontSize="10"/>
+                    </chart:SfChart.Legend>
+                    <chart:SfChart.Behaviors>
+                        <chart:ChartZoomPanBehavior
+                    EnablePanning="True"
+                    EnableSelectionZooming="False"
+                    HorizontalPosition="Right"
+                    ResetOnDoubleTap="True" MaximumZoomLevel="5"/>
+                    </chart:SfChart.Behaviors>
+                    <chart:SfChart.PrimaryAxis>
+                        <chart:NumericalAxis ShowGridLines="True" Background="White" Foreground="Black" Interval="100">
+                        </chart:NumericalAxis>
+                    </chart:SfChart.PrimaryAxis>
+                    <chart:SfChart.SecondaryAxis>
+                        <chart:NumericalAxis ShowGridLines="True" Maximum="11" Background="White" Foreground="Black" Interval="1" Header="mm">
+                        </chart:NumericalAxis>
+                    </chart:SfChart.SecondaryAxis>
+                    <chart:FastLineSeries EnableAnimation="True" VisibilityOnLegend="Visible" AnimationDuration="00:00:01" ItemsSource="{Binding SerializationTwoAdSampling}" Label="Two" StrokeThickness="2" XBindingPath="X" YBindingPath="Y"/>
+                    <chart:FastLineSeries EnableAnimation="False" VisibilityOnLegend="Visible" AnimationDuration="00:00:05" ItemsSource="{Binding SerializationTwoPeak}" Label="TwoPeak" StrokeThickness="4" XBindingPath="X" YBindingPath="Y"/>
+                    <chart:FastLineSeries EnableAnimation="False" VisibilityOnLegend="Visible" AnimationDuration="00:00:05" ItemsSource="{Binding SerializationTwoGrain}" Label="TwoGrain" StrokeThickness="4" XBindingPath="X" YBindingPath="Y"/>
+                </chart:SfChart>
+            </StackPanel>-->
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <chart:SfChart Margin="10,10,0,0" x:Name="chartcurve3" Width="650" Height="400" ColorModel="{StaticResource CustomColor}" Palette="Custom" Background="White"  Foreground="Black">
+                    <chart:SfChart.Legend>
+                        <chart:ChartLegend  FontSize="11" CheckBoxVisibility="Visible"/>
+                    </chart:SfChart.Legend>
+                    <chart:SfChart.Behaviors>
+                        <chart:ChartZoomPanBehavior
+                    EnablePanning="True"
+                    EnableSelectionZooming="False"
+                    HorizontalPosition="Right"
+                    ResetOnDoubleTap="True" MaximumZoomLevel="10" />
+                        <chart:ChartCrossHairBehavior/>
+                    </chart:SfChart.Behaviors>
+                    <chart:SfChart.PrimaryAxis>
+                        <chart:NumericalAxis ShowGridLines="False"  ShowTrackBallInfo="True" Background="White" Foreground="Black" Interval="100">
+                        </chart:NumericalAxis>
+                    </chart:SfChart.PrimaryAxis>
+                    <chart:SfChart.SecondaryAxis>
+                        <chart:NumericalAxis ShowGridLines="True" ShowTrackBallInfo="True"  Background="White" Foreground="Black" Interval="1" Header="mm">
+                            <chart:NumericalAxis.StripLines>
+                                <chart:ChartStripLine Width="0.05" Background="Black" Start="0"/>
+                            </chart:NumericalAxis.StripLines>
+                        </chart:NumericalAxis>
+                    </chart:SfChart.SecondaryAxis>
+                    <chart:FastLineSeries   EnableAnimation="True" AnimationDuration="00:00:01" ItemsSource="{Binding BounceOneAdSampling}" Label="轴" StrokeThickness="2" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="True" AnimationDuration="00:00:01" ItemsSource="{Binding BounceTwoAdSampling}" Label="蜗杆" StrokeThickness="2" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="False" AnimationDuration="00:00:02" ItemsSource="{Binding BounceOnePeak}" Label="轴位移波峰" StrokeThickness="1" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="False" AnimationDuration="00:00:02" ItemsSource="{Binding BounceOneGrain}" Label="轴位移波谷" StrokeThickness="1" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="False" AnimationDuration="00:00:02" ItemsSource="{Binding BounceTwoPeak}" Label="蜗杆位移波峰" StrokeThickness="1" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="False" AnimationDuration="00:00:02" ItemsSource="{Binding BounceTwoGrain}" Label="蜗杆位移波谷" StrokeThickness="1" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                </chart:SfChart>
+                <chart:SfChart x:Name="chartcurve4" Margin="10,10,0,0" Width="650" Height="400" ColorModel="{StaticResource CustomColor}" Palette="Custom" Background="White" Foreground="Black">
+                    <chart:SfChart.Legend>
+                        <chart:ChartLegend  FontSize="11" CheckBoxVisibility="Visible"/>
+                    </chart:SfChart.Legend>
+                    <chart:SfChart.Behaviors>
+                        <chart:ChartZoomPanBehavior
+                    EnablePanning="True"
+                    EnableSelectionZooming="False"
+                    HorizontalPosition="Right"
+                    ResetOnDoubleTap="True" MaximumZoomLevel="10" />
+                        <chart:ChartCrossHairBehavior/>
+                    </chart:SfChart.Behaviors>
+                    <chart:SfChart.PrimaryAxis>
+                        <chart:NumericalAxis ShowGridLines="False" ShowTrackBallInfo="True" Background="White" Foreground="Black" Interval="100">
+                        </chart:NumericalAxis>
+                    </chart:SfChart.PrimaryAxis>
+                    <chart:SfChart.SecondaryAxis>
+                        <chart:NumericalAxis ShowGridLines="True" ShowTrackBallInfo="True" Background="White" Foreground="Black" Interval="1" Header="mm">
+                            <chart:NumericalAxis.StripLines>
+                                <chart:ChartStripLine Width="0.05" Background="Black" Start="0"/>
+                            </chart:NumericalAxis.StripLines>
+                        </chart:NumericalAxis>
+                    </chart:SfChart.SecondaryAxis>
+                    <chart:FastLineSeries EnableAnimation="True" AnimationDuration="00:00:01" ItemsSource="{Binding BounceThreeAdSampling}" Label="轴" StrokeThickness="2" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="True" AnimationDuration="00:00:01" ItemsSource="{Binding BounceFourAdSampling}" Label="蜗杆" StrokeThickness="2" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="False" AnimationDuration="00:00:05" ItemsSource="{Binding BounceThreePeak}" Label="轴位移波峰" StrokeThickness="1" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="False" AnimationDuration="00:00:05" ItemsSource="{Binding BounceThreeGrain}" Label="轴位移波谷" StrokeThickness="1" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="False" AnimationDuration="00:00:05" ItemsSource="{Binding BounceFourPeak}" Label="蜗杆位移波峰" StrokeThickness="1" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                    <chart:FastLineSeries EnableAnimation="False" AnimationDuration="00:00:05" ItemsSource="{Binding BounceFourGrain}" Label="蜗杆位移波谷" StrokeThickness="1" XBindingPath="X" YBindingPath="Y" Foreground="White"/>
+                </chart:SfChart>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="360">
+                <TabControl Width="1400">
+                    <TabItem Header="实时A/D" Height="40">
+                        <StackPanel Orientation="Vertical">
+                            <chart:SfChart x:Name="chartcurveAutos" Margin="10,0,0,0" Width="1350" Height="250" ColorModel="{StaticResource CustomColor}" Palette="Custom" Background="White" Foreground="Black">
+                                <chart:SfChart.Legend>
+                                    <chart:ChartLegend  FontSize="9" CheckBoxVisibility="Visible"/>
+                                </chart:SfChart.Legend>
+                                <chart:SfChart.PrimaryAxis>
+                                    <chart:DateTimeAxis ShowGridLines="True" Background="White" Foreground="Black" LabelFormat="HH时mm分ss秒">
+                                    </chart:DateTimeAxis >
+                                </chart:SfChart.PrimaryAxis>
+                                <chart:SfChart.SecondaryAxis>
+                                    <chart:NumericalAxis ShowGridLines="False" Background="White" Foreground="Black" Interval="1">
+                                        <chart:NumericalAxis.StripLines>
+                                            <chart:ChartStripLine Width="0.01" Background="#FF6D6D6D" Start="0"/>
+                                        </chart:NumericalAxis.StripLines>
+                                    </chart:NumericalAxis>
+                                </chart:SfChart.SecondaryAxis>
+                                <chart:LineSeries EnableAnimation="False" ShowTooltip="True" ItemsSource="{Binding BounceOneAdSamplingAuto}"  Label="轴动一" StrokeThickness="2" XBindingPath="Time" YBindingPath="Value" Foreground="White"/>
+                                <chart:LineSeries EnableAnimation="False" ItemsSource="{Binding BounceTwoAdSamplingAuto}" Label="蜗杆一" StrokeThickness="2" XBindingPath="Time" YBindingPath="Value" Foreground="White"/>
+                                <chart:LineSeries EnableAnimation="False" ItemsSource="{Binding BounceThreeAdSamplingAuto}" Label="轴动二" StrokeThickness="2" XBindingPath="Time" YBindingPath="Value" Foreground="White"/>
+                                <chart:LineSeries EnableAnimation="False" ItemsSource="{Binding BounceFourAdSamplingAuto}" Label="蜗杆二" StrokeThickness="2" XBindingPath="Time" YBindingPath="Value" Foreground="White"/>
+                                <chart:LineSeries EnableAnimation="False" ItemsSource="{Binding SerializationOneAdSamplingAuto}" Label="串动一" StrokeThickness="2" XBindingPath="Time" YBindingPath="Value" Foreground="White"/>
+                                <chart:LineSeries EnableAnimation="False" ItemsSource="{Binding SerializationTwoAdSamplingAuto}" Label="串动二" StrokeThickness="2" XBindingPath="Time" YBindingPath="Value" Foreground="White"/>
+                                <chart:LineSeries EnableAnimation="False" ItemsSource="{Binding PressureOneAdSamplingAuto}" Label="压力一" StrokeThickness="2" XBindingPath="Time" YBindingPath="Value" Foreground="White"/>
+                                <chart:LineSeries EnableAnimation="False" ItemsSource="{Binding PressureTwoAdSamplingAuto}" Label="压力二" StrokeThickness="2" XBindingPath="Time" YBindingPath="Value" Foreground="White"/>
+                            </chart:SfChart>
+                            <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical" Margin="40,0,0,0">
+                                    <TextBlock Margin="10,10,0,0" Text="串动1位移：" Foreground="Black"/>
+                                    <TextBlock Margin="10,10,0,0" Text="串动2位移：" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding Doubles[4], StringFormat='{} {0} mm'}" Foreground="Black"/>
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding Doubles[5], StringFormat='{} {0} mm'}" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="10,10,0,0" Text="串动1压力：" Foreground="Black"/>
+                                    <TextBlock Margin="10,10,0,0" Text="串动2压力：" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding Doubles[6], StringFormat='{} {0} N'}" Foreground="Black"/>
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding Doubles[7], StringFormat='{} {0} N'}" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="10,10,0,0" Text="轴动1位移：" Foreground="Black"/>
+                                    <TextBlock Margin="10,10,0,0" Text="蜗杆1位移：" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding Doubles[0], StringFormat='{} {0} mm'}" Foreground="Black"/>
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding Doubles[1], StringFormat='{} {0} mm'}" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="10,10,0,0" Text="轴动2位移：" Foreground="Black"/>
+                                    <TextBlock Margin="10,10,0,0" Text="蜗杆2位移：" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding Doubles[2], StringFormat='{} {0} mm'}" Foreground="Black"/>
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding Doubles[3], StringFormat='{} {0} mm'}" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="10,10,0,0" Text="电流值1：" Foreground="Black"/>
+                                    <TextBlock Margin="10,10,0,0" Text="电流值2：" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding OneElectric, StringFormat='{} {0} A'}" Foreground="Black"/>
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding TwoElectric, StringFormat='{} {0} A'}" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="10,10,0,0" Text="注油量：" Foreground="Black"/>
+                                    <TextBlock Margin="10,10,0,0" Text="注油速度：" Foreground="Black"/>
+
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding OilValue, StringFormat='{} {0} g'}" Foreground="Black"/>
+                                    <TextBlock Margin="0,10,0,0" Width="100" Text="{Binding OilSpeed, StringFormat='{} {0} g/s'}" Foreground="Black"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="测试结果" Height="40">
+                        <StackPanel Orientation="Vertical">
+                            <Border Margin="20,0,0,0" Width="600" Height="15" Background="White">
+                                <TextBlock  Text="四工位测试结果" FontSize="13" HorizontalAlignment="Center" Foreground="Black"/>
+                            </Border>
+                            <DataGrid x:Name="test4" Height="140" Margin="10,0,0,0" FontSize="12" AutoGenerateColumns="False" BorderBrush="#1F000000" Width="1350" ItemsSource="{Binding No4TestResult}" CanUserAddRows="True" SelectionMode="Single">
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Setter Property="Background" Value="#FFCECCCC"/>
+                                                <Setter Property="Foreground" Value="#FF060606"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.CellStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="时间">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="15,5,0,0" Text="{Binding Time}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="1号载具结果">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="15,5,0,0" Text="{Binding OneResult}" Background="{Binding OneColor}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="2号载具结果">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="15,5,0,0" Text="{Binding TwoResult}" Background="{Binding TwoColor}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="一号串动量(mm)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=One_bunch_movement,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="二号串动量(mm)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=Two_bunch_movement,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="一号推动位移值(mm)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=PushOneMove,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="二号推动位移值(mm)">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=PushTwoMove,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="一号推力(N)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=PushOneForce,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="二号推力(N)">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=PushTwoForce,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="一号拉动位移值(mm)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=PullOneMove,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="二号拉动位移值(mm)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=PullTwoMove,Mode=TwoWay}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="一号拉力(N)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=PullOneForce,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="二号拉力(N)">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=PullTwoForce,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Border Margin="20,0,0,0" Width="600" Height="15" Background="White">
+                                <TextBlock  Text="五工位测试结果" FontSize="13" HorizontalAlignment="Center" Foreground="Black"/>
+                            </Border>
+                            <DataGrid x:Name="test5" Height="140" Margin="10,0,0,0" FontSize="12" AutoGenerateColumns="False" BorderBrush="#1F000000" Width="1350" ItemsSource="{Binding No5TestResult}" CanUserAddRows="False" SelectionMode="Single">
+                                <DataGrid.CellStyle>
+                                    <Style TargetType="DataGridCell">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Setter Property="Background" Value="#FFCECCCC"/>
+                                                <Setter Property="Foreground" Value="#FF060606"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.CellStyle>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="时间">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="15,5,0,0" Text="{Binding Time}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="1号载具结果">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="15,5,0,0" Text="{Binding OneResult}" Background="{Binding OneColor}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="2号载具结果">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="15,5,0,0" Text="{Binding TwoResult}" Background="{Binding TwoColor}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="一号空载电流">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=OneElE}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="一号轴跳值(mm)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=OneValue,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="一号蜗杆跳值(mm)">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=TwoValue,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="二号空载电流">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=TwoElE}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="二号轴跳值(mm)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=ThreeValue,Mode=TwoWay}" Foreground="#FF020202"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn  Header="二号蜗杆跳值(mm)">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Margin="20,5,0,0" Text="{Binding Path=FourValue,Mode=TwoWay}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
